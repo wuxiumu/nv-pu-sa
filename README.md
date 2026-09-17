@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](./LICENSE)
 [![Local First](https://img.shields.io/badge/local--first-browser-3db8a0)](#快速开始)
-[![Data](https://img.shields.io/badge/archive-463%20accounts-f0a05a)](#数据来源)
+[![Data](https://img.shields.io/badge/archive-493%20accounts-f0a05a)](#数据来源)
 
 本地优先的 **X（Twitter）博主全量归档浏览器**：从 [nv-pu-sa](https://nv-pu-sa.pages.dev/) 的 R2 公共数据拉取档案，支持搜索 / 过滤 / **收藏·备注·标签管理**，并可一键跳转到本机 [X Archive Hub](http://127.0.0.1:8770/) 新建账号。
 

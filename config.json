@@ -1,0 +1,10 @@
+{
+  "siteName": "女菩萨 · 归档浏览器",
+  "sourceSite": "https://nv-pu-sa.pages.dev/",
+  "runtimeConfigUrl": "https://nv-pu-sa.pages.dev/runtime-config.json",
+  "hubBaseUrl": "http://127.0.0.1:8770",
+  "hubNewPath": "/app/?tab=new&account=",
+  "defaultPort": 8788,
+  "dataFile": "./data/archive.enriched.json",
+  "metaFile": "./data/meta.json"
+}

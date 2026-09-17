@@ -1,0 +1,25 @@
+{
+  "name": "nv-pu-sa",
+  "version": "1.0.0",
+  "description": "女菩萨 X 博主全量归档浏览器：本地预览、搜索过滤、收藏备注管理，一键跳转 Hub 新建账号",
+  "private": true,
+  "scripts": {
+    "start": "bash scripts/serve.sh",
+    "serve": "bash scripts/serve.sh",
+    "fetch": "python3 scripts/fetch_archive.py",
+    "fetch:dry": "python3 scripts/fetch_archive.py --dry-run"
+  },
+  "keywords": [
+    "nv-pu-sa",
+    "twitter",
+    "x-archive",
+    "gallery",
+    "local-first"
+  ],
+  "author": "wuxiumu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wuxiumu/nv-pu-sa.git"
+  }
+}

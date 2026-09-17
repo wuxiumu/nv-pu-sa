@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="女菩萨 · X 博主全量归档浏览器：搜索、收藏、备注、标签管理，一键跳转 Hub 新建账号" />
+  <title>女菩萨 · 归档浏览器</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="top">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div>
+          <h1>女菩萨 · 归档浏览器</h1>
+          <p class="sub">全量预览 · 搜索过滤 · 收藏备注 · Hub 新建</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="meta" id="metaLine">加载中…</div>
+        <div class="mgr-stats" id="mgrStats"></div>
+        <button type="button" class="btn ghost" id="btnManage">管理</button>
+      </div>
+    </header>
+
+    <section class="toolbar" aria-label="搜索与过滤">
+      <div class="search-wrap">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input id="q" type="search" placeholder="搜索 handle / 昵称 / 简介 / 标签 / 备注…" autocomplete="off" spellcheck="false" />
+        <kbd>/</kbd>
+      </div>
+      <div class="filters">
+        <select id="sort" title="排序">
+          <option value="followers">粉丝 ↓</option>
+          <option value="clicks">点击 ↓</option>
+          <option value="name">昵称 A→Z</option>
+          <option value="handle">Handle A→Z</option>
+          <option value="synced">最近同步</option>
+          <option value="fav">收藏优先</option>
+        </select>
+        <label class="chk"><input type="checkbox" id="onlyFav" /> 仅收藏</label>
+        <label class="chk"><input type="checkbox" id="onlyVerified" /> 已认证</label>
+        <label class="chk"><input type="checkbox" id="hideBlocked" checked /> 隐藏封禁/停用</label>
+      </div>
+      <div class="count" id="countLine">—</div>
+    </section>
+
+    <div class="status" id="status" hidden></div>
+    <div class="grid" id="grid" role="list"></div>
+    <div class="empty" id="empty" hidden>没有匹配结果。试试更短的关键词，或关掉过滤条件。</div>
+  </div>
+
+  <dialog id="manageDialog" class="dlg">
+    <form method="dialog" class="dlg-inner" id="manageForm">
+      <header class="dlg-head">
+        <h2>本地管理</h2>
+        <button type="submit" class="btn ghost" value="cancel" aria-label="关闭">关闭</button>
+      </header>
+      <p class="muted">收藏 / 备注 / 标签保存在本机浏览器 localStorage，不会上传。</p>
+      <label for="hubBaseUrl">Hub 基址（新建跳转）</label>
+      <input id="hubBaseUrl" type="url" placeholder="http://127.0.0.1:8770" />
+      <div class="row">
+        <button type="button" class="btn primary" id="btnSaveHub">保存 Hub</button>
+        <button type="button" class="btn ghost" id="btnExport">导出管理数据</button>
+        <button type="button" class="btn ghost" id="btnImport">导入</button>
+        <button type="button" class="btn danger" id="btnClearMgr">清空管理数据</button>
+      </div>
+      <input id="importFile" type="file" accept="application/json,.json" hidden />
+      <pre class="export-box" id="exportBox" hidden></pre>
+      <p class="muted" id="manageHint"></p>
+    </form>
+  </dialog>
+
+  <dialog id="noteDialog" class="dlg">
+    <form method="dialog" class="dlg-inner" id="noteForm">
+      <header class="dlg-head">
+        <h2 id="noteTitle">备注 / 标签</h2>
+        <button type="submit" class="btn ghost" value="cancel">关闭</button>
+      </header>
+      <input type="hidden" id="noteHandle" />
+      <label for="noteText">备注</label>
+      <textarea id="noteText" rows="4" placeholder="例如：优先同步图文 / 已建实例端口 8767"></textarea>
+      <label for="noteTags">标签（逗号或空格分隔）</label>
+      <input id="noteTags" type="text" placeholder="优先, 图文, 待建" />
+      <div class="row">
+        <button type="button" class="btn primary" id="btnSaveNote">保存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="cardTpl">
+    <article class="card" role="listitem">
+      <a class="avatar-link" target="_blank" rel="noopener" title="在 X 打开">
+        <img class="avatar" alt="" loading="lazy" decoding="async" />
+      </a>
+      <div class="body">
+        <div class="title-row">
+          <div class="names">
+            <div class="name"></div>
+            <div class="handle"></div>
+          </div>
+          <div class="badges"></div>
+        </div>
+        <p class="bio"></p>
+        <div class="note-line" hidden></div>
+        <div class="tag-line" hidden></div>
+        <div class="stats"></div>
+        <div class="actions">
+          <button type="button" class="btn ghost fav-btn" title="收藏">☆ 收藏</button>
+          <button type="button" class="btn ghost note-btn">备注</button>
+          <a class="btn primary hub-new" target="_blank" rel="noopener">Hub 新建</a>
+          <a class="btn ghost x-link" target="_blank" rel="noopener">打开 X</a>
+          <button type="button" class="btn ghost copy-handle">复制</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="./js/store.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>

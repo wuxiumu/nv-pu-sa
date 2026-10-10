@@ -11,3 +11,7 @@ __pycache__/
 config.local.json
 data/*.bak.json
 data/archive.raw.tmp.json
+
+.env
+.env.*
+!.env.example

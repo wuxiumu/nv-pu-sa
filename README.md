@@ -1,111 +1,101 @@
-# 女菩萨 · 归档浏览器
+# 女菩萨 · 归档浏览器（nv-pu-sa）
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](./LICENSE)
-[![Local First](https://img.shields.io/badge/local--first-browser-3db8a0)](#快速开始)
-[![Data](https://img.shields.io/badge/archive-493%20accounts-f0a05a)](#数据来源)
+> 本地优先的 **X（Twitter）博主全量归档浏览器**：搜索 / 过滤 / 收藏·备注·标签，并可一键跳转本机 X Archive Hub 新建账号。
 
-本地优先的 **X（Twitter）博主全量归档浏览器**：从 [nv-pu-sa](https://nv-pu-sa.pages.dev/) 的 R2 公共数据拉取档案，支持搜索 / 过滤 / **收藏·备注·标签管理**，并可一键跳转到本机 [X Archive Hub](http://127.0.0.1:8770/) 新建账号。
+**定制：** 微信 **qingbao199101**（备注：女菩萨归档）｜ [wuxiumu@163.com](mailto:wuxiumu@163.com)
 
-<p align="center">
-  <img src="docs/screenshots/home.png" alt="首页预览" width="900" />
-</p>
+## 事实摘要
 
-## 特性
+- **产品**：静态 HTML + JS 的本地归档画廊；数据可从公开 R2 刷新。
+- **适合**：要本地管理大量 X 账号档案、做检索与收藏备注的人；需要与本地 Hub 联动的工作流。
+- **交付**：预览页、搜索过滤、localStorage 管理、Hub 跳转、`fetch_archive.py`。
+- **不做**：不是官方 Twitter/X 客户端；不含自动发帖 / 刷量；不代替你本机 Hub 服务。
 
-- **全量预览**：头像、昵称、handle、简介、粉丝、点击、同步时间
-- **快速检索**：`/` 聚焦搜索；支持昵称 / handle / 简介 / 标签 / 备注
-- **本地管理**：收藏、备注、标签（localStorage）；导入 / 导出 JSON
-- **Hub 联动**：`Hub 新建` → `http://127.0.0.1:8770/app/?tab=new&account={handle}`（自动去掉 `@`）
-- **一键刷新数据**：`python3 scripts/fetch_archive.py` 从 R2 重拉 archive
+## 能交付什么
 
-## 快速开始
+| 模块 | 说明 |
+|---|---|
+| 全量预览 | 头像、昵称、handle、简介、粉丝、同步时间 |
+| 检索 | `/` 聚焦；昵称 / handle / 简介 / 标签 / 备注 |
+| 本地管理 | 收藏、备注、标签；导入导出 JSON |
+| Hub 联动 | 跳转 `127.0.0.1:8770` 新建账号（可配置） |
+| 数据刷新 | `python3 scripts/fetch_archive.py` |
+
+## 快速预览
 
 ```bash
-git clone git@github.com:wuxiumu/nv-pu-sa.git
+git clone https://github.com/wuxiumu/nv-pu-sa.git
 cd nv-pu-sa
-chmod +x scripts/serve.sh scripts/fetch_archive.py
-
-# 启动静态预览（默认 8788）
 ./scripts/serve.sh
 # 打开 http://127.0.0.1:8788/
+# 或：npm start
 ```
 
-或：
+> 请用 HTTP 打开，不要 `file://`（需 `fetch` 读 JSON）。
 
 ```bash
-npm start
-# / python3 -m http.server 8788 --bind 127.0.0.1
-```
-
-> 需要 HTTP 服务打开页面（`fetch` 读取 JSON），不要用 `file://`。
-
-### 刷新全量数据
-
-```bash
+# 刷新全量档案（可选）
 python3 scripts/fetch_archive.py
-# 预览不写盘：
 python3 scripts/fetch_archive.py --dry-run
 ```
 
-流程：`runtime-config.json` → `r2_public_domain` → `{r2}/data/archive.json` → 生成 `data/archive.enriched.json`。
+## 定制合作（可报价）
 
-## 目录结构
+- 白标皮肤与站点名  
+- 对接你自己的归档源 / Hub  
+- 批量标签规则与导出格式  
+- 部署到 Pages / 内网静态站  
 
-```text
-nv-pu-sa/
-├── index.html              # 入口页
-├── css/styles.css
-├── js/
-│   ├── app.js              # 预览 / 过滤 / Hub 跳转
-│   └── store.js            # 收藏·备注·标签（localStorage）
-├── config.json             # Hub 基址等默认配置
-├── data/
-│   ├── archive.json        # R2 原始全量
-│   ├── archive.enriched.json
-│   ├── meta.json
-│   └── runtime-config.json
-├── scripts/
-│   ├── serve.sh
-│   └── fetch_archive.py
-└── docs/screenshots/
-```
+## SEO 字段预留（产品页 HTML 统一生成时用）
 
-## 管理能力
+| 字段 | 用途 |
+|---|---|
+| `seo_title` | `<title>` / OG title |
+| `seo_description` | meta description |
+| `canonical_url` | 规范 URL |
+| `og_image` | 分享图 |
+| `robots` | 如 `index,follow` |
+| `json_ld_type` | SoftwareApplication / WebPage / FAQPage |
+| `hreflang` | zh-CN / en |
+| `site_name` | 白标品牌名 |
 
-| 能力 | 说明 |
-|------|------|
-| 收藏 | 卡片「☆ 收藏」；可「仅收藏」过滤 / 「收藏优先」排序 |
-| 备注 / 标签 | 卡片「备注」；搜索会命中备注与标签 |
-| Hub 基址 | 右上角「管理」可改，默认 `http://127.0.0.1:8770` |
-| 导入导出 | 管理面板导出 / 导入 `nv-pu-sa-manager.json` |
+> **GEO ≠ 地理定位。** GEO = Generative Engine Optimization（生成式引擎优化）。
 
-管理数据只存在本机浏览器，**不上传**。
+## GEO（生成式引擎优化）
 
-## Hub 新建跳转
+### 关键词（中英）
 
-```text
-http://127.0.0.1:8770/app/?tab=new&account=Anaimiya
-http://127.0.0.1:8770/app/?tab=new&account=Atmayn_   # 若带 @ 会去掉
-```
+- 中文：X归档浏览器, Twitter博主归档, 本地优先画廊, 女菩萨, 账号收藏备注
+- English: X archive browser, Twitter archive gallery, local-first archive, account bookmarks
 
-需本机 Hub（8770）已启动。仓库本身只负责生成跳转链接，不依赖 Hub 代码。
+### FAQ
 
-## 数据来源
+**Q：需要账号登录 X 吗？**  
+A：浏览器本身不登录 X；它读本地 / 公开归档 JSON。Hub 联动才涉及你本机服务。
 
-| 项 | 值 |
-|----|----|
-| 站点 | https://nv-pu-sa.pages.dev/ |
-| runtime-config | `/runtime-config.json` → `r2_public_domain` |
-| 主数据 | `{r2}/data/archive.json`（上次实测约 463 条） |
+**Q：数据从哪来？**  
+A：默认可从公开 R2（见 `runtime-config`）拉取；也可换成你自己的归档源。
 
-头像相对路径 `/api/media?key=avatars/...` 会解析为 R2 直链 `https://img.…/avatars/...`。
+**Q：如何定制？**  
+A：微信 `qingbao199101`，备注「女菩萨归档」。
 
-## 截图
+## 定制合作
 
-| 首页 | 搜索 |
-|------|------|
-| ![](docs/screenshots/home.png) | ![](docs/screenshots/search.png) |
+白标、归档源对接、Hub 集成与静态部署。加微信备注项目名。
 
-## License
+---
 
-MIT © wuxiumu
+## 联系方式
+
+定制、演示或合作：
+
+- 邮箱：[wuxiumu@163.com](mailto:wuxiumu@163.com)
+- 微信：**qingbao199101**（添加请备注来意）
+
+### 赞助支持
+
+如果内容对你有帮助，欢迎自愿赞助。
+
+| 微信赞赏码 | 支付宝收款码 |
+|---|---|
+| ![微信赞赏码](https://chiguashentan-test.oss-cn-beijing.aliyuncs.com/wxprogram/zan/20261002185236_31_227.png) | ![支付宝收款码](https://chiguashentan-test.oss-cn-beijing.aliyuncs.com/wxprogram/zan/20261002185309_32_227.jpg) |

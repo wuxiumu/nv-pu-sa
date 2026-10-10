@@ -21,6 +21,13 @@
 | Hub 联动 | 跳转 `127.0.0.1:8770` 新建账号（可配置） |
 | 数据刷新 | `python3 scripts/fetch_archive.py` |
 
+
+## 冒烟自检
+
+```bash
+bash scripts/smoke.sh
+```
+
 ## 快速预览
 
 ```bash

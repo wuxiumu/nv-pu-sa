@@ -7,7 +7,8 @@
     "start": "bash scripts/serve.sh",
     "serve": "bash scripts/serve.sh",
     "fetch": "python3 scripts/fetch_archive.py",
-    "fetch:dry": "python3 scripts/fetch_archive.py --dry-run"
+    "fetch:dry": "python3 scripts/fetch_archive.py --dry-run",
+    "smoke": "bash scripts/smoke.sh"
   },
   "keywords": [
     "nv-pu-sa",
